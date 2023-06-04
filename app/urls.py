@@ -18,11 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 from app.spa.views import SpaView
+from app.spa.views import HomeView
 from app.api.views import GreetingApi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')), 
-    path('', SpaView.as_view(), name='spa'),
+    # path('accounts/', include('django.contrib.auth.urls')), 
+    path('accounts/', include('allauth.urls')), 
+    path('spa/', SpaView.as_view(), name='spa'),
     path('api/greet', GreetingApi.as_view()),
+    path('', HomeView.as_view(), name='home'),
 ]

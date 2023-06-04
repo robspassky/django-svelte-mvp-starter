@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-!up*5&*f#eroq!l8z@!ksxm9379m+oszk_qpbamyn4hd9+$oyc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = "DJANGO_DEBUG" in os.environ and os.environ["DJANGO_DEBUG"] == "ON"
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -38,10 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'rest_framework',
     'app.spa',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.twitter_oauth2',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -160,14 +167,23 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
         },
-        "myapp": {
+        "app": {
             "level": logging_level,
             "handlers": ["console"],
             "propagate": False,
         },
+        "allauth": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+        },
     },
 }
 
-LOGIN_URL = reverse_lazy("login")
+# LOGIN_URL = reverse_lazy("home")
 LOGIN_REDIRECT_URL = reverse_lazy("spa")
-LOGOUT_REDIRECT_URL = reverse_lazy("spa")
+# LOGOUT_REDIRECT_URL = reverse_lazy("home")
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend"
+]
